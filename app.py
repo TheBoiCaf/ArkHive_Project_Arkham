@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, flask_bcrypt
 from flask_sqlalchemy import SQLAlchemy
 import requests
 import os
-import bcrypt
+
 
 #region App Setup
 app = Flask(__name__)
@@ -28,7 +28,7 @@ def login():
 
             user = next((u for u in users if u["username"] == username), None)
             
-            if user and bcrypt.checkpw(password.encode('utf-8'), user["password"].encode('utf-8')):
+            if user and flask_bcrypt.checkpw(password.encode('utf-8'), user["password"].encode('utf-8')):
                 flash('Login successful!', 'success')
                 return redirect(url_for('home'))
             else:
